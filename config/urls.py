@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
@@ -7,3 +9,6 @@ urlpatterns = [
     # apps
     path("api/v1/users/", include("users.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, decument_root=settings.MEDIA_ROOT)
