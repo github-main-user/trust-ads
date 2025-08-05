@@ -2,6 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 
 from ads.models import Ad
+from reviews.models import Review
 from users.models import User
 
 # general
@@ -69,3 +70,26 @@ def ad_factory(db, user: User, ad_data: dict):
 @pytest.fixture
 def ad(ad_factory) -> Ad:
     return ad_factory()
+
+
+# reviews
+
+
+@pytest.fixture
+def review_data() -> dict:
+    return {"text": "Test review"}
+
+
+@pytest.fixture
+def review_factory(db, user: User, ad: Ad, review_data: dict):
+    def _review_factory(**kwargs):
+        defaults = review_data | {"author": user, "ad": ad}
+        defaults.update(kwargs)
+        return Review.objects.create(**defaults)
+
+    return _review_factory
+
+
+@pytest.fixture
+def review(review_factory) -> Review:
+    return review_factory()

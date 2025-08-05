@@ -98,7 +98,7 @@ def test_me_retrieve_unauthenticated(api_client):
 
 
 @pytest.mark.django_db
-def test_me_update_success(api_client, user):
+def test_me_retrieve_success(api_client, user):
     api_client.force_authenticate(user)
     response = api_client.patch(reverse("users:user-me"))
 
