@@ -8,6 +8,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # apps
     path("api/v1/users/", include("users.urls")),
+    path("api/v1/ads/", include("ads.urls")),
 ]
 
 if settings.DEBUG:
