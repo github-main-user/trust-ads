@@ -1,6 +1,6 @@
 from typing import override
 
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from users.permissions import IsRoleAdmin
@@ -15,6 +15,9 @@ class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
     pagination_class = AdPagination
+
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("title",)
 
     @override
     def get_permissions(self):

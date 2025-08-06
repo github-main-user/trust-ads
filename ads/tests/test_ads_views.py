@@ -9,7 +9,13 @@ from ads.models import Ad
 
 @pytest.fixture
 def ads(ad_factory) -> list[Ad]:
-    return [ad_factory(), ad_factory(), ad_factory(), ad_factory(), ad_factory()]
+    return [
+        ad_factory(title="A plush toy"),
+        ad_factory(title="A plush toy 2"),
+        ad_factory(title="Another plush toy 3"),
+        ad_factory(),
+        ad_factory(),
+    ]
 
 
 # list
@@ -30,6 +36,15 @@ def test_ads_list_success(api_client, ads, user):
 
     assert response.status_code == status.HTTP_200_OK
     assert response.data.get("count") == len(ads)
+
+
+@pytest.mark.django_db
+def test_ads_list_search(api_client, ads, user):
+    api_client.force_authenticate(user)
+    response = api_client.get(reverse("ads:ad-list"), {"search": "plush toy"})
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.data.get("count") == sum("plush toy" in ad.title for ad in ads)
 
 
 # create
