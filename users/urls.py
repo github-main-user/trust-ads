@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .apps import UsersConfig
-from .views import MeAPIView, RegisterAPIView
+from .views import ChangePasswordView, MeAPIView, RegisterAPIView
 
 app_name = UsersConfig.name
 
@@ -13,4 +13,5 @@ urlpatterns = [
     # user
     path("register/", RegisterAPIView.as_view(), name="user-register"),
     path("me/", MeAPIView.as_view(), name="user-me"),
+    path("change-password/", ChangePasswordView.as_view(), name="user-change-password"),
 ]

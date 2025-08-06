@@ -147,3 +147,39 @@ def test_me_delete_success(api_client, user):
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
     assert not User.objects.filter(id=user.id).exists()
+
+
+# change password
+
+
+def test_change_password_unauthenticated(api_client):
+    response = api_client.put(
+        reverse("users:user-change-password"),
+        {"old_password": "pass", "new_password": "new_pass"},
+    )
+
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+@pytest.mark.django_db
+def test_change_password_success(api_client, user):
+    api_client.force_authenticate(user)
+    response = api_client.put(
+        reverse("users:user-change-password"),
+        {"old_password": "pass", "new_password": "NEWPASSWORD"},
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert user.check_password("NEWPASSWORD")
+
+
+@pytest.mark.django_db
+def test_change_password_wrong_old_password(api_client, user):
+    api_client.force_authenticate(user)
+    response = api_client.put(
+        reverse("users:user-change-password"),
+        {"old_password": "WRONG", "new_password": "NEWPASSWORD"},
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert not user.check_password("NEWPASSWORD")
