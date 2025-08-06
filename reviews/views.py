@@ -1,6 +1,7 @@
 from typing import override
 
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -12,6 +13,27 @@ from .permissions import IsReviewAuthor
 from .serializers import ReviewSerializer
 
 
+@extend_schema(tags=["reviews"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="List all reviews", description="Retrieves a list of all reviews."
+    ),
+    retrieve=extend_schema(
+        summary="Retrieve a review",
+        description="Retrieves the details of a specific review.",
+    ),
+    create=extend_schema(
+        summary="Create a new review", description="Creates a new review."
+    ),
+    update=extend_schema(
+        summary="Update a review", description="Updates an existing review."
+    ),
+    partial_update=extend_schema(
+        summary="Partially update a review",
+        description="Partially updates an existing review.",
+    ),
+    destroy=extend_schema(summary="Delete a review", description="Deletes a review."),
+)
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer

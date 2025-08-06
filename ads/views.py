@@ -1,5 +1,6 @@
 from typing import override
 
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import filters, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -11,6 +12,23 @@ from .permissions import IsAdAuthor
 from .serializers import AdSerializer
 
 
+@extend_schema(tags=["ads"])
+@extend_schema_view(
+    list=extend_schema(
+        summary="List all ads",
+        description="Retrieves a list of all ads. Supports search by title.",
+    ),
+    retrieve=extend_schema(
+        summary="Retrieve an ad", description="Retrieves the details of a specific ad."
+    ),
+    create=extend_schema(summary="Create a new ad", description="Creates a new ad."),
+    update=extend_schema(summary="Update an ad", description="Updates an existing ad."),
+    partial_update=extend_schema(
+        summary="Partially update an ad",
+        description="Partially updates an existing ad.",
+    ),
+    destroy=extend_schema(summary="Delete an ad", description="Deletes an ad."),
+)
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
