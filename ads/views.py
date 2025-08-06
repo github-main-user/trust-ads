@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from users.permissions import IsRoleAdmin
 
 from .models import Ad
+from .pagination import AdPagination
 from .permissions import IsAdAuthor
 from .serializers import AdSerializer
 
@@ -13,6 +14,7 @@ from .serializers import AdSerializer
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
+    pagination_class = AdPagination
 
     @override
     def get_permissions(self):

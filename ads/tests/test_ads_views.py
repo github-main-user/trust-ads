@@ -20,7 +20,7 @@ def test_ads_list_unauthenticated_success(api_client, ads):
     response = api_client.get(reverse("ads:ad-list"))
 
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == len(ads)
+    assert response.data.get("count") == len(ads)
 
 
 @pytest.mark.django_db
@@ -29,7 +29,7 @@ def test_ads_list_success(api_client, ads, user):
     response = api_client.get(reverse("ads:ad-list"))
 
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == len(ads)
+    assert response.data.get("count") == len(ads)
 
 
 # create
