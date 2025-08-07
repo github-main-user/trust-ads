@@ -5,11 +5,12 @@ from decouple import Csv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", cast=bool, default=False)
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 
+FRONTEND_URL = "http://localhost:3000"
+PASSWORD_RESET_URL = f"{FRONTEND_URL}/password-reset/{{uid}}/{{token}}/"
 
 INSTALLED_APPS = [
     "django.contrib.admin",
