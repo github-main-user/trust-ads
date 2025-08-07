@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -49,6 +49,7 @@ class MeAPIView(generics.RetrieveUpdateDestroyAPIView):
 @extend_schema(
     summary="Change user password",
     description="This endpoint allows authenticated users to change their password.",
+    responses={200: OpenApiResponse(), 400: OpenApiResponse()},
 )
 class ChangePasswordView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
@@ -56,7 +57,7 @@ class ChangePasswordView(generics.GenericAPIView):
 
     def put(self, request):
         user = self.request.user
-        serializer = self.get_serializer(data=request.data)
+        serializer = ChangePasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         if not user.check_password(serializer.validated_data["old_password"]):
@@ -76,9 +77,11 @@ class ChangePasswordView(generics.GenericAPIView):
 @extend_schema(
     summary="Request user password reset",
     description="This endpoint allows user to request password reset.",
+    responses={200: OpenApiResponse()},
 )
 class ResetPasswordRequestView(generics.GenericAPIView):
     permission_classes = (AllowAny,)
+    serializer_class = ResetPasswordRequestSerializer
 
     def post(self, request):
         response = Response(
@@ -106,9 +109,11 @@ class ResetPasswordRequestView(generics.GenericAPIView):
 @extend_schema(
     summary="Confirm user password reset",
     description="This endpoint allows user to confirm password reset.",
+    responses={200: OpenApiResponse(), 400: OpenApiResponse()},
 )
 class ResetPasswordConfirmView(generics.GenericAPIView):
     permission_classes = (AllowAny,)
+    serializer_class = ResetPasswordConfirmSerializer
 
     def post(self, request):
         serializer = ResetPasswordConfirmSerializer(data=request.data)
