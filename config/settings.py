@@ -12,6 +12,9 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=Csv())
 FRONTEND_URL = "http://localhost:3000"
 PASSWORD_RESET_URL = f"{FRONTEND_URL}/password-reset/{{uid}}/{{token}}/"
 
+CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -19,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "drf_spectacular",
     "users",
     "ads",
@@ -26,6 +30,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
