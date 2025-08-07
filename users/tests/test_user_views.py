@@ -1,6 +1,9 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 
 User = get_user_model()
@@ -183,3 +186,100 @@ def test_change_password_wrong_old_password(api_client, user):
 
     assert response.status_code == status.HTTP_400_BAD_REQUEST
     assert not user.check_password("NEWPASSWORD")
+
+
+@pytest.mark.django_db
+def test_change_password_same_password(api_client, user):
+    api_client.force_authenticate(user)
+    response = api_client.put(
+        reverse("users:user-change-password"),
+        {"old_password": "pass", "new_password": "pass"},
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert user.check_password("pass")
+
+
+# reset password
+
+
+@pytest.mark.django_db
+def test_reset_password_request_success(api_client, user):
+    response = api_client.post(
+        reverse("users:user-reset-password"), {"email": user.email}
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_reset_password_request_non_existent_email(api_client):
+    response = api_client.post(
+        reverse("users:user-reset-password"), {"email": "nonexistent@email.com"}
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+def test_reset_password_request_invalid_email(api_client):
+    response = api_client.post(
+        reverse("users:user-reset-password"), {"email": "invalid-email"}
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+
+# reset password confirm
+
+
+@pytest.mark.django_db
+def test_reset_password_confirm_success(api_client, user):
+    uid_b64 = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+    response = api_client.post(
+        reverse("users:user-reset-password-confirm"),
+        {
+            "uid_b64": uid_b64,
+            "token": token,
+            "new_password": "new_password",
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    user.refresh_from_db()
+    assert user.check_password("new_password")
+
+
+@pytest.mark.django_db
+def test_reset_password_confirm_invalid_uid(api_client, user):
+    token = default_token_generator.make_token(user)
+    response = api_client.post(
+        reverse("users:user-reset-password-confirm"),
+        {
+            "uid_b64": "invalid_uid",
+            "token": token,
+            "new_password": "new_password",
+        },
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    user.refresh_from_db()
+    assert not user.check_password("new_password")
+
+
+@pytest.mark.django_db
+def test_reset_password_confirm_invalid_token(api_client, user):
+    uid_b64 = urlsafe_base64_encode(force_bytes(user.pk))
+    response = api_client.post(
+        reverse("users:user-reset-password-confirm"),
+        {
+            "uid_b64": uid_b64,
+            "token": "invalid_token",
+            "new_password": "new_password",
+        },
+    )
+
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
+    user.refresh_from_db()
+    assert not user.check_password("new_password")
