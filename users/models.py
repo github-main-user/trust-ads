@@ -6,7 +6,8 @@ from .managers import UserManager
 
 phone_validator = RegexValidator(
     regex=r"^\+?\d{9,15}$",
-    message="Phone number must be in the format: '+999999999'. Up to 15 digits allowed.",
+    message="Phone number must be in the format: '+999999999'. "
+    "Up to 15 digits allowed.",
 )
 
 
