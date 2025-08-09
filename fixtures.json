@@ -1,0 +1,156 @@
+[
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$A04BD0JiNksBhcPaygnGis$z2m96Zc/jxaGlTlCnnNnA/R/UyROIEs7pqWKP3biwnw=",
+    "last_login": "2025-08-09T16:57:39.498Z",
+    "is_superuser": true,
+    "first_name": "Admin😈",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-08-09T16:57:32.769Z",
+    "email": "admin@admin.com",
+    "phone": "+666666666",
+    "role": "Admin",
+    "image": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$nrX6IFgojwTn3T7yjmSkDm$JvlA0UaIGmvRx5In3Jn+8NIftlZdoIhHD9vDtiDjsx4=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Иван",
+    "last_name": "Петров",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-09T17:10:49.062Z",
+    "email": "ivan.petrov@example.com",
+    "phone": "+79161234567",
+    "role": "User",
+    "image": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$f7iX9LrQf0R4oi2gS4M7zF$f2Q3TbEAj2ztQWwu6sjHfcQlPLF9Kcrt3Jh60ZcU+5o=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Елена",
+    "last_name": "Сидорова",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-09T17:10:49.595Z",
+    "email": "elena.sidorova@example.com",
+    "phone": "+79267654321",
+    "role": "User",
+    "image": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$brrgxT6Mtc1FTbSVum11Zc$Iie2TV0AMVDpKQj4b1sssldYhAbHGhhn+AE5pPnDbzM=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Сергей",
+    "last_name": "Иванов",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-09T17:10:50.121Z",
+    "email": "sergey.ivanov@example.com",
+    "phone": "+79035558877",
+    "role": "User",
+    "image": "",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "ads.ad",
+  "pk": 1,
+  "fields": {
+    "title": "Продам старинный самовар",
+    "price": 15000,
+    "description": "Тульский самовар, 19 век, в хорошем состоянии. Отличный подарок или предмет интерьера.",
+    "author": 2,
+    "created_at": "2025-08-09T17:10:50.649Z"
+  }
+},
+{
+  "model": "ads.ad",
+  "pk": 2,
+  "fields": {
+    "title": "Отдам котят в добрые руки",
+    "price": 0,
+    "description": "Два милых котенка, 2 месяца, приучены к лотку. Только ответственным людям.",
+    "author": 3,
+    "created_at": "2025-08-09T17:10:50.651Z"
+  }
+},
+{
+  "model": "ads.ad",
+  "pk": 3,
+  "fields": {
+    "title": "Продаю велосипед",
+    "price": 8000,
+    "description": "Горный велосипед, почти новый, 21 скорость. Катался пару раз.",
+    "author": 2,
+    "created_at": "2025-08-09T17:10:50.653Z"
+  }
+},
+{
+  "model": "ads.ad",
+  "pk": 4,
+  "fields": {
+    "title": "Ищу репетитора по математике",
+    "price": 1000,
+    "description": "Нужен репетитор для подготовки к ЕГЭ. 11 класс.",
+    "author": 4,
+    "created_at": "2025-08-09T17:10:50.654Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 1,
+  "fields": {
+    "text": "Отличный самовар! Купила в подарок родителям, они в восторге. Продавец очень приятный.",
+    "author": 3,
+    "ad": 1,
+    "created_at": "2025-08-09T17:10:50.657Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 2,
+  "fields": {
+    "text": "Велосипед что надо! Состояние идеальное, как и было заявлено. Спасибо!",
+    "author": 4,
+    "ad": 3,
+    "created_at": "2025-08-09T17:10:50.659Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 3,
+  "fields": {
+    "text": "Очень красивый самовар, но цена показалась высоковатой. В остальном все отлично.",
+    "author": 4,
+    "ad": 1,
+    "created_at": "2025-08-09T17:10:50.661Z"
+  }
+}
+]
