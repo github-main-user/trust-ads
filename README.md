@@ -1,5 +1,7 @@
 # Trust Ads
 
+Documentation is available on: [English 🇺🇸](README.md) | [Russian 🇷🇺](README.ru.md)
+
 This is a Django REST Framework backend for a classified ads platform with user authentication, role management, ad posting, reviews, and search functionality.
 
 ## Features
