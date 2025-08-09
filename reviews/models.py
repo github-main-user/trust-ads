@@ -7,10 +7,24 @@ User = get_user_model()
 
 
 class Review(models.Model):
-    text = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews")
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE, related_name="reviews")
-    created_at = models.DateTimeField(auto_now_add=True)
+    """Represents a review to an advertisement."""
+
+    text = models.TextField(help_text="Content of the review.")
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+        help_text="User who wrote the review.",
+    )
+    ad = models.ForeignKey(
+        Ad,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+        help_text="Ad to which the review belongs",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, help_text="The date and time the review was created"
+    )
 
     class Meta:
         ordering = ["created_at"]
@@ -19,6 +33,8 @@ class Review(models.Model):
             models.Index(fields=["ad"]),
             models.Index(fields=["created_at"]),
         ]
+        verbose_name = "Review"
+        verbose_name = "Reviews"
 
     def __str__(self) -> str:
         return f"Review by {self.author} on Ad #{self.ad_id}"

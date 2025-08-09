@@ -11,20 +11,31 @@ phone_validator = RegexValidator(
 
 
 class User(AbstractUser):
+    """Represents a user."""
+
     class UserRole(models.TextChoices):
         USER = "User", "user"
         ADMIN = "Admin", "admin"
 
     username = None
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, help_text="Email address")
     phone = models.CharField(
-        max_length=15, validators=[phone_validator], blank=True, null=True
+        max_length=15,
+        validators=[phone_validator],
+        blank=True,
+        null=True,
+        help_text="Phone number in format: '+999999999'",
     )
     role = models.CharField(
-        max_length=5, choices=UserRole.choices, default=UserRole.USER
+        max_length=5,
+        choices=UserRole.choices,
+        default=UserRole.USER,
+        help_text="User role",
     )
-    image = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    image = models.ImageField(
+        upload_to="avatars/", blank=True, null=True, help_text="User avatar"
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -33,6 +44,8 @@ class User(AbstractUser):
 
     class Meta:
         indexes = [models.Index(fields=["role"])]
+        verbose_name = "User"
+        verbose_name_plural = "Users"
 
     def __str__(self) -> str:
         return self.email
